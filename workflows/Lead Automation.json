@@ -1,0 +1,505 @@
+{
+  "name": "Lead Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "c3ea0266-e702-4a44-99b0-7eac3a0b760b",
+              "leftValue": "={{ $json.body.name }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "08c0ec71-467e-4a85-a94b-618b303c423d",
+              "leftValue": "={{ $json.body.email }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "355a34eb-9f01-4b0e-bca0-1db2527e39a3",
+              "leftValue": "={{ $json.body.company }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {
+          "ignoreCase": false
+        }
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        176,
+        -128
+      ],
+      "id": "bc371483-2c30-42f7-bb01-86ef3bf39115",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1280,
+        -256
+      ],
+      "id": "b1f90404-d12c-42d7-934e-1eb697bfb21b",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1QEmisRQUWAJM4W2rpdvQ2nhu6xwqJE0hG12a6d1Weiw",
+          "mode": "list",
+          "cachedResultName": "N8N SHEET",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QEmisRQUWAJM4W2rpdvQ2nhu6xwqJE0hG12a6d1Weiw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QEmisRQUWAJM4W2rpdvQ2nhu6xwqJE0hG12a6d1Weiw/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Column 1": "={{ $json.intent }}",
+            "Column 2": "={{ $json.confidence }}",
+            "Column 3": "={{ $json.linkedin_url }}",
+            "Column 4": "={{ $json.company_size }}",
+            "Column 5": "={{ $json.industry }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Column 1",
+              "displayName": "Column 1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Column 2",
+              "displayName": "Column 2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Column 3",
+              "displayName": "Column 3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Column 4",
+              "displayName": "Column 4",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Column 5",
+              "displayName": "Column 5",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        960,
+        48
+      ],
+      "id": "bdf7e284-5ead-4ea0-a7c6-403ca7f1ab73",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bKwFzosCmaig9FB5",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"status\": \"error\",\n  \"message\": \"Invalid input\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        400,
+        48
+      ],
+      "id": "a8c5c4ca-de3d-456a-9266-1f74f1041aa0",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $(' Start Trigger').item.json.body.email }}",
+        "subject": "Hello",
+        "message": "API Test",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1168,
+        48
+      ],
+      "id": "9ddf7e38-6599-4a42-ae02-228fb2564231",
+      "name": "Send a message",
+      "webhookId": "1f781cd0-7328-4860-ada5-9719ec660d39",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "scBXbOdFJYJSRCwM",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"{{$json['status'] || 'success'}}\",\n  \"message\": \"{{$json['message'] || 'processed successfully'}}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        1424,
+        48
+      ],
+      "id": "76852113-88e1-41d1-b801-03f3330c3fd3",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"status\": \"error\",\n  \"message\": \"Invalid input\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        672,
+        80
+      ],
+      "id": "e750fece-8b73-463a-aac5-63681657aa77",
+      "name": "Respond to Webhook1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:8000/enrich",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"name\": \"{{ $json.body.name }}\",\n  \"email\": \"{{ $json.body.email }}\",\n  \"company\": \"{{ $json.body.company }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        704,
+        -272
+      ],
+      "id": "19aeb0fa-0503-4a36-af9f-085006e35000",
+      "name": "Enrich API",
+      "notesInFlow": true,
+      "notes": "Calls FastAPI /enrich endpoint to enrich lead data.\n\nInput:\n- name\n- email\n- company\n\nReturns:\n- linkedin_url\n- company_size\n- industry\n\nPurpose:\nAdds business context to the lead for better downstream processing.\n\n"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:8000/classify",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"message\": \"Hi, this is {{ $('If').item.json.body.name }} from {{ $('If').item.json.body.company }}. I am interested in your services. You can reach me at {{ $('If').item.json.body.email }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        720,
+        -480
+      ],
+      "id": "f6b12f7d-40e5-4215-b9ba-41fe9fcef977",
+      "name": "Classify API"
+    },
+    {
+      "parameters": {
+        "multipleMethods": "={{ false }}",
+        "httpMethod": "POST",
+        "path": "lead",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "5c994632-c12a-4886-a2ab-91578473eb27",
+      "name": " Start Trigger",
+      "webhookId": "7513b6a6-8644-47b3-b9f9-ac5503dcc784",
+      "retryOnFail": true,
+      "notesInFlow": true,
+      "onError": "continueRegularOutput",
+      "notes": "Receives incoming lead data from Postman test webhook.\n\nExpected input:\n- name\n- email\n- company\n\nTriggers the workflow."
+    },
+    {
+      "parameters": {
+        "content": "Final Responce after Successfully run\n",
+        "height": 80,
+        "width": 192
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1648,
+        48
+      ],
+      "typeVersion": 1,
+      "id": "7b27f71c-dce9-4a18-a79f-df52abfc8df0",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "Validates incoming lead data before processing.\n\nChecks:\n- name is not empty\n- email contains \"@\"\n- company is not empty\n\nIf validation fails:\n→ Workflow stops or routes to error handling.\n\nPurpose:\nPrevents bad data from reaching APIs and storage."
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        32,
+        -320
+      ],
+      "typeVersion": 1,
+      "id": "8af0447d-036e-4d44-bd81-4458876874af",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "Final Responce after Error ",
+        "height": 80,
+        "width": 208
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        624,
+        240
+      ],
+      "typeVersion": 1,
+      "id": "86c677c1-af8e-455f-b203-d1e5eda54f7b",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "Receives incoming lead data from Postman test webhook.\n\nExpected input:\n- name\n- email\n- company\n\nTriggers the workflow.\n"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -304,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "0f9793b5-b24a-4ace-bcab-65f3e842ab22",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "Merges enrichment data and classification output into a single structured object.\n\nMode: Append\n\nInputs:\n- Input 1 → Classification (intent, confidence)\n- Input 2 → Enrichment (linkedin_url, company_size, industry)\n\nOutput:\nCombined dataset containing all lead attributes.\n\n⚠️ Current issue:\n\"Append\" creates multiple rows instead of one unified record.\n\n✅ Recommended:\nSwitch to \"Combine\" → Merge by position/index.\n\nPurpose:\nPrepares final structured data for storage and notifications.",
+        "height": 320,
+        "width": 560
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1456,
+        -512
+      ],
+      "typeVersion": 1,
+      "id": "12a5be2c-cb73-4611-86d3-ac3e4898a7b1",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "Sends notification for new lead.\n\nIncludes:\n- Name\n- Company\n- Intent\n- Confidence\n\nPurpose:\nAlerts team for immediate action on high-intent leads.\n\nExample:\n\"New Sales Enquiry from Sam(Tech Inc)\"\n\n⚠️ Can be extended with priority logic (based on confidence).",
+        "height": 288,
+        "width": 464
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1168,
+        240
+      ],
+      "typeVersion": 1,
+      "id": "6eaf7647-5554-456f-8452-8211acb01931",
+      "name": "Sticky Note5"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Enrich API",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Classify API",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enrich API": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Classify API": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    " Start Trigger": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "416176e0-7e7a-42bf-a228-9c53b02c276e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7b0fa8b63489b6d1d16e2c5df471feba42247847116eeda6a79a51ef4506991d"
+  },
+  "id": "5IjiueXeDVM4hwqM",
+  "tags": []
+}

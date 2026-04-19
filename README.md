@@ -11,7 +11,7 @@ The included workflow shows how an automation tool can receive an inbound payloa
 
 - `main.py` - `uvicorn` entrypoint
 - `app/` - FastAPI package with routes, models, and business logic
-- `workflows/lead_automation_workflow.json` - exported `n8n` workflow
+- `workflows/Lead Automation.json` - exported `n8n` workflow
 - `requirements.txt` - Python dependencies
 
 ## Setup Instructions
@@ -120,10 +120,39 @@ The solution is split into two simple layers:
 
 This structure keeps the backend easy to explain in a walkthrough and makes it straightforward to swap the mock logic with real enrichment or LLM-backed classification later.
 
+## Workflow Architecture Diagram
+
+```mermaid
+flowchart LR
+    A[Client or Form Submission] --> B[n8n Webhook Trigger]
+    B --> C[Normalize Payload]
+    C --> D[POST /enrich]
+    C --> E[POST /classify]
+
+    subgraph F[FastAPI Backend]
+        D --> G[Lead Enrichment Service]
+        E --> H[Intent Classification Service]
+    end
+
+    G --> I[Enrichment Result]
+    H --> J[Classification Result]
+    I --> K[n8n Merge Results]
+    J --> K
+    K --> L[Format Final Response]
+    L --> M[Webhook Response to Client]
+```
+
+### Diagram Notes
+
+- The workflow starts when `n8n` receives a webhook payload containing lead details and a message.
+- A normalization step shapes the incoming data into the format expected by the FastAPI endpoints.
+- `n8n` calls `/enrich` and `/classify` independently, which keeps the backend responsibilities small and focused.
+- After both API calls return, the workflow merges the outputs and responds with one combined JSON payload.
+
 ## Running the n8n Workflow
 
 1. Start the FastAPI app locally on port `8000`.
-2. Import `workflows/lead_automation_workflow.json` into `n8n`.
+2. Import `workflows/Lead Automation.json` into `n8n`.
 3. Update the HTTP Request node URLs if your API is not reachable at `http://host.docker.internal:8000`.
 4. Trigger the webhook with a payload like:
 

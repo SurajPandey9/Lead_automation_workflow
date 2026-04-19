@@ -131,27 +131,10 @@ This structure keeps the backend easy to explain in a walkthrough and makes it s
 {
   "name": "Jane Doe",
   "email": "jane@example.com",
-  "company": "Acme",
-  "message": "I am interested in buying your product."
+  "company": "Acme"
 }
 ```
 
 The workflow returns the original lead info plus enrichment and classification results.
 
-## Loom Walkthrough Checklist
 
-For the required 5 to 10 minute video, you can cover:
-
-1. Repository structure and why the FastAPI app is split into models, routes, and services.
-2. The `n8n` workflow design and how the webhook fans out to both API endpoints.
-3. A live demo of calling the FastAPI docs and then triggering the `n8n` workflow.
-4. Key design decisions, including thin route handlers, separated business logic, and keeping the workflow stateless and easy to extend.
-
-## GitHub Submission Notes
-
-Before submitting:
-
-1. Initialize git locally if needed: `git init`
-2. Commit the project files.
-3. Push to GitHub or another hosted git provider.
-4. Include the repository link and Loom link in your submission.
